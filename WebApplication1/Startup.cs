@@ -33,6 +33,12 @@ namespace WebApplication1
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.WithOrigins("http://localhost:3000"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,12 +58,23 @@ namespace WebApplication1
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            //app.UseCors("AllowSpecificOrigin");
+            app.UseCors(builder =>
+            builder.WithOrigins("http://localhost:3000")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod()
+            );
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-            });
+                routes.MapRoute(
+                    name: "desk",
+                    template: "{controller=Desk}/{action=Load}/{id?}/{email?}/{name?}");
+            }
+            );
         }
     }
 }
