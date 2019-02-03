@@ -18,14 +18,25 @@ namespace WebApplication1.Views
         [HttpGet]
         public string Get()
         {
-            Account acc = new Account
+            List<Note> ln = new List<Note>();
+            ln.Add(new Note
             {
-                Email = "a",
-                Name = "a",
-                Phone = "888",
-            };
+                date = DateTime.Now.ToString("h:mm tt"),
+                ID = "7",
+                msg = "this sis a message"
+            });
+            ln.Add(new Note
+            {
+                date = DateTime.Now.ToString("h:mm tt"),
+                ID = "2",
+                msg = "this sis a message again"
+            });
 
-            return JsonConvert.SerializeObject(acc);
+            NotesList n = new NotesList();
+            n.NotesL = ln;
+            
+
+            return JsonConvert.SerializeObject(n);
         }
 
         // POST: api/Shop
